@@ -1,0 +1,12 @@
+{
+  "name": "educational-platform",
+  "version": "1.0.0",
+  "description": "منصة التلخيص الذكي - جامعة الباحة",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.x"
+  }
+}
