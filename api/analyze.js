@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const levelPrompts = {
       comprehensive: language === 'arabic' ? 
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
 2. خمس نصائح دراسية
 3. خمس أسئلة اختيار من متعدد
 
-المحتوى: ${content.substring(0, 12000)}
+المحتوى: ${content.substring(0, 6000)}
 
 رد بصيغة JSON فقط:
 {
@@ -88,7 +88,7 @@ Respond in JSON only:
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 3000
+          maxOutputTokens: 1500
         }
       })
     });
