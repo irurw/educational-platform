@@ -15,21 +15,17 @@ export default async function handler(req, res) {
     const { content, language, level } = req.body;
 
     if (!content || !language || !level) {
-      return res.status(400).json({ 
-        error: 'Missing required fields' 
-      });
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     
     if (!GEMINI_API_KEY) {
       console.error('GEMINI_API_KEY not found');
-      return res.status(500).json({ 
-        error: 'Server configuration error' 
-      });
+      return res.status(500).json({ error: 'Server configuration error' });
     }
 
-    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const levelPrompts = {
       comprehensive: language === 'arabic' ? 
@@ -48,7 +44,7 @@ export default async function handler(req, res) {
 2. خمس نصائح دراسية
 3. خمس أسئلة اختيار من متعدد
 
-المحتوى: ${content.substring(0, 6000)}
+المحتوى: ${content.substring(0, 12000)}
 
 رد بصيغة JSON فقط:
 {
@@ -88,7 +84,7 @@ Respond in JSON only:
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 1500
+          maxOutputTokens: 3000
         }
       })
     });
@@ -105,9 +101,7 @@ Respond in JSON only:
     const data = await response.json();
     
     if (!data.candidates?.[0]?.content) {
-      return res.status(500).json({ 
-        error: 'Invalid AI response' 
-      });
+      return res.status(500).json({ error: 'Invalid AI response' });
     }
 
     let responseText = data.candidates[0].content.parts[0].text
@@ -123,9 +117,7 @@ Respond in JSON only:
     const result = JSON.parse(responseText);
 
     if (!result.summary || !result.tips || !result.questions) {
-      return res.status(500).json({ 
-        error: 'Incomplete AI response' 
-      });
+      return res.status(500).json({ error: 'Incomplete AI response' });
     }
 
     return res.status(200).json(result);
@@ -138,3 +130,18 @@ Respond in JSON only:
     });
   }
 }
+```
+
+4. اضغط **Commit new file**
+
+---
+
+## ⏳ انتظر:
+
+- Vercel سينشر تلقائياً (30-60 ثانية)
+
+---
+
+## 🎉 جرّب الموقع:
+```
+https://educational-platform-lcram5266-ras-projects-cb308a96.vercel.app
